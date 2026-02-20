@@ -36,5 +36,5 @@ export async function revalidateAIConfig(tenantId: string) {
     // But for now, we'll revalidate the cache key or general tag.
     // unstable_cache keys are hashed. 
     // To properly invalidate specific tenant, we should include tenantId in tags.
-    revalidateTag('ai-config'); // This invalidates ALL AI configs. Good enough for low traffic MVP.
+    revalidateTag('ai-config');
 }
