@@ -62,6 +62,7 @@ export async function registerOwner(prevState: any, formData: FormData) {
                 user_id: authData.user.id,
                 company_name: companyName,
                 subscription_tier: tier,
+                subscription_status: 'pending_payment'
             });
 
         if (tenantError) {

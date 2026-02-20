@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Plus, Search, BrainCircuit, Loader2, Trash2, Pencil } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { supabase } from "@/lib/supabase";
+import { getProductsAction, createProductAction, updateProductAction, deleteProductAction } from "@/app/actions/product";
 
 // Type definition for Product
 interface Product {
@@ -42,26 +42,8 @@ export default function ProductsPage() {
     const fetchProducts = async () => {
         setLoading(true);
         try {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return;
-
-            // Get tenant first
-            const { data: tenant } = await supabase
-                .from('tenants')
-                .select('id')
-                .eq('user_id', user.id)
-                .single();
-
-            if (!tenant) return;
-
-            const { data, error } = await supabase
-                .from('products')
-                .select('*')
-                .eq('tenant_id', tenant.id)
-                .order('created_at', { ascending: false });
-
-            if (error) throw error;
-            setProducts(data || []);
+            const data = await getProductsAction();
+            setProducts(data);
         } catch (error) {
             console.error("Error fetching products:", error);
         } finally {
@@ -73,43 +55,22 @@ export default function ProductsPage() {
         e.preventDefault();
         setIsSubmitting(true);
         try {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return;
-
-            const { data: tenant } = await supabase
-                .from('tenants')
-                .select('id')
-                .eq('user_id', user.id)
-                .single();
-
-            if (!tenant) return;
-
             if (editingId) {
                 // Update existing product
-                const { error } = await supabase.from('products')
-                    .update({
-                        name: formData.name,
-                        price: parseFloat(formData.price),
-                        stock: parseInt(formData.stock) || 0,
-                        description: formData.description,
-                    })
-                    .eq('id', editingId)
-                    .eq('tenant_id', tenant.id);
-
-                if (error) throw error;
+                await updateProductAction(editingId, {
+                    name: formData.name,
+                    price: parseFloat(formData.price),
+                    stock: parseInt(formData.stock) || 0,
+                    description: formData.description,
+                });
             } else {
                 // Create new product
-                const { error } = await supabase.from('products').insert([
-                    {
-                        tenant_id: tenant.id,
-                        name: formData.name,
-                        price: parseFloat(formData.price),
-                        stock: parseInt(formData.stock) || 0,
-                        description: formData.description,
-                    }
-                ]);
-
-                if (error) throw error;
+                await createProductAction({
+                    name: formData.name,
+                    price: parseFloat(formData.price),
+                    stock: parseInt(formData.stock) || 0,
+                    description: formData.description,
+                });
             }
 
             setIsDialogOpen(false);
@@ -146,8 +107,7 @@ export default function ProductsPage() {
         if (!confirm("Are you sure you want to delete this product?")) return;
 
         try {
-            const { error } = await supabase.from('products').delete().eq('id', id);
-            if (error) throw error;
+            await deleteProductAction(id);
             fetchProducts();
         } catch (error) {
             console.error("Error deleting product:", error);
@@ -234,13 +194,13 @@ export default function ProductsPage() {
                     <TableBody>
                         {loading ? (
                             <TableRow>
-                                <TableCell colSpan={5} className="h-24 text-center">
+                                <TableCell colSpan={6} className="h-24 text-center">
                                     <Loader2 className="mx-auto h-6 w-6 animate-spin text-muted-foreground" />
                                 </TableCell>
                             </TableRow>
                         ) : filteredProducts.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
+                                <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
                                     Belum ada produk. Silakan tambah produk baru.
                                 </TableCell>
                             </TableRow>
@@ -260,12 +220,14 @@ export default function ProductsPage() {
                                         </div>
                                     </TableCell>
                                     <TableCell>
-                                        <Button variant="ghost" size="icon" onClick={() => handleEditClick(product)} className="mr-1">
-                                            <Pencil className="h-4 w-4 text-primary" />
-                                        </Button>
-                                        <Button variant="ghost" size="icon" onClick={() => handleDeleteProduct(product.id)}>
-                                            <Trash2 className="h-4 w-4 text-destructive" />
-                                        </Button>
+                                        <div className="flex">
+                                            <Button variant="ghost" size="icon" onClick={() => handleEditClick(product)} className="mr-1">
+                                                <Pencil className="h-4 w-4 text-primary" />
+                                            </Button>
+                                            <Button variant="ghost" size="icon" onClick={() => handleDeleteProduct(product.id)}>
+                                                <Trash2 className="h-4 w-4 text-destructive" />
+                                            </Button>
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             ))

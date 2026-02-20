@@ -16,21 +16,21 @@ export function PricingSection() {
                 {/* Tier 1 */}
                 <Card className="flex flex-col h-full">
                     <CardHeader>
-                        <CardTitle className="text-2xl">Tier 1 — Chatbot Assistant</CardTitle>
+                        <CardTitle className="text-2xl">Core (Tier 1)</CardTitle>
                         <CardDescription>Otomatisasi chat dasar & database customer.</CardDescription>
                     </CardHeader>
                     <CardContent className="flex-1">
                         <div className="text-4xl font-bold">Rp 99k <span className="text-lg font-normal text-muted-foreground">/ bulan</span></div>
                         <ul className="mt-4 space-y-3">
-                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> Omnichannel Inbox</li>
-                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> AI Auto Reply Produk & FAQ</li>
-                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> Natural Conversation (Human-like)</li>
-                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> Lead Classification Basic</li>
-                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> Simpan Data Customer</li>
+                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-green-500" /> Omnichannel Inbox</li>
+                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-green-500" /> AI Auto Reply Produk & FAQ</li>
+                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-green-500" /> Natural Conversation</li>
+                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-green-500" /> Lead Classification Basic</li>
+                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-green-500" /> Simpan Data Customer</li>
                             {/* Limitations */}
                             <li className="flex items-center text-muted-foreground"><X className="mr-2 h-4 w-4" /> Tidak Jualan Aktif</li>
                             <li className="flex items-center text-muted-foreground"><X className="mr-2 h-4 w-4" /> Tidak Follow-up Otomatis</li>
-                            <li className="flex items-center text-muted-foreground"><X className="mr-2 h-4 w-4" /> Tidak Ada Fitur Payment</li>
+                            <li className="flex items-center text-muted-foreground"><X className="mr-2 h-4 w-4" /> Tidak Payment</li>
                         </ul>
                     </CardContent>
                     <CardFooter>
@@ -46,18 +46,23 @@ export function PricingSection() {
                         Paling Laris
                     </div>
                     <CardHeader>
-                        <CardTitle className="text-2xl">Tier 2 — AI Sales Agent</CardTitle>
+                        <CardTitle className="text-2xl">Sales Agent + Payment (Tier 2)</CardTitle>
                         <CardDescription>Salesman digital lengkap dengan payment.</CardDescription>
                     </CardHeader>
                     <CardContent className="flex-1">
-                        <div className="text-4xl font-bold">Rp 249k <span className="text-lg font-normal text-muted-foreground">/ bulan</span></div>
+                        <div className="text-4xl font-bold">Rp 199k <span className="text-lg font-normal text-muted-foreground">/ bulan</span></div>
                         <ul className="mt-4 space-y-3">
-                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> <span><strong>AI Aktif Jualan</strong> (Tanya, Rekomendasi, Closing)</span></li>
-                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> <span><strong>Auto Follow-up</strong> Buyer Belum Checkout</span></li>
+                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> Omnichannel Inbox</li>
+                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> AI Auto Reply Produk & FAQ</li>
+                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> Natural Conversation</li>
+                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> Lead Classification Basic</li>
+                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> Simpan Data Customer</li>
+                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> <span><strong>AI Aktif Jualan</strong> (Closing)</span></li>
+                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> <span><strong>Auto Follow-up</strong> Buyer</span></li>
                             <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> Lead Scoring Pintar</li>
                             <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> Generate Payment Link Otomatis</li>
                             <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> Payment Langsung di Chat</li>
-                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> Status Order & Pembayaran Real-time</li>
+                            <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> Status Order Real Time</li>
                             <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" /> Conversion Analytics</li>
                         </ul>
                     </CardContent>

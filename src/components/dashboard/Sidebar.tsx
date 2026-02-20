@@ -2,26 +2,26 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, MessageSquare, Workflow, CreditCard, Settings, Lock, Zap } from 'lucide-react';
+import { LayoutDashboard, MessageSquare, Workflow, CreditCard, Settings, Lock, Zap, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useTier } from '@/contexts/TierContext';
 
 export function Sidebar() {
     const pathname = usePathname();
-    // In a real app, this should come from a context or a hook that fetches the tenant profile
-    // For now, we'll default to Tier 2 if not loaded, or fetch it.
-    // Ideally: const { tenant } = useTenant();
-    const tier = 2; // Default to Pro for now until we hook up the Context
+    // Connect to global Tier Context
+    const { tier, status } = useTier();
 
     const isTier1 = tier === 1;
+    const isPending = status !== 'active';
 
     const links = [
-        { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, locked: false },
-        { href: '/dashboard/inbox', label: 'Chat', icon: MessageSquare, locked: false },
-        { href: '/dashboard/products', label: 'Data Produk', icon: Workflow, locked: false },
-        { href: '/dashboard/orders', label: 'History Payment', icon: CreditCard, locked: isTier1 }, // Locked for Tier 1
-        { href: '/dashboard/settings', label: 'Pengaturan', icon: Settings, locked: false },
+        { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, locked: isPending },
+        { href: '/dashboard/inbox', label: 'Chat', icon: MessageSquare, locked: isPending },
+        { href: '/dashboard/products', label: 'Data Produk', icon: Workflow, locked: isPending },
+        { href: '/dashboard/orders', label: 'History Payment', icon: CreditCard, locked: isPending || isTier1 },
+        { href: '/dashboard/settings', label: 'Pengaturan', icon: Settings, locked: isPending }, // Locked if pending
+        { href: '/dashboard/billing', label: 'Langganan', icon: CreditCard, locked: false }, // Always allow billing
     ];
 
     return (
@@ -57,7 +57,22 @@ export function Sidebar() {
                     ))}
                 </nav>
             </div>
+
+            <div className="mt-auto p-4 border-t">
+                <Button
+                    variant="ghost"
+                    className="w-full justify-start gap-3 text-muted-foreground hover:text-red-600 hover:bg-red-50"
+                    onClick={async () => {
+                        const { createClient } = await import("@/utils/supabase/client");
+                        const supabase = createClient();
+                        await supabase.auth.signOut();
+                        window.location.href = '/login';
+                    }}
+                >
+                    <LogOut className="h-4 w-4" />
+                    Log Out
+                </Button>
+            </div>
         </div>
     );
 }
-

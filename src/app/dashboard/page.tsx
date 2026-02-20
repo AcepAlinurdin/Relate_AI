@@ -6,7 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { AI_FIXED_QUESTIONS } from "@/lib/constants";
-import { aiConfigService, AIConfig } from "@/services/aiConfig";
+import { getAIConfigAction, saveAIConfigAction } from "@/app/actions/ai-config";
+import { getDashboardStatsAction } from "@/app/actions/stats";
+import { AIConfig } from "@/services/aiConfig";
 import { Loader2, Users, ShoppingCart, DollarSign, Activity, TrendingUp, BarChart3, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTier } from "@/contexts/TierContext";
@@ -60,43 +62,10 @@ export default function DashboardPage() {
     const loadStats = async () => {
         setLoadingStats(true);
         try {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return;
-            const { data: tenant } = await supabase.from('tenants').select('id').eq('user_id', user.id).single();
-            if (!tenant) return;
-
-            // Fetch Leads
-            const { count: leadCount, data: leads } = await supabase
-                .from('leads')
-                .select('*', { count: 'exact' })
-                .eq('tenant_id', tenant.id);
-
-            // Fetch Orders
-            const { count: orderCount, data: orders } = await supabase
-                .from('orders')
-                .select('*', { count: 'exact' })
-                .eq('tenant_id', tenant.id);
-
-            // Calculate metrics
-            const paidOrders = orders?.filter(o => o.status === 'paid') || [];
-            const revenue = paidOrders.reduce((sum, order) => sum + (order.total_amount || 0), 0);
-
-            // Mock Lead Scoring distribution (since we don't have real scores yet for all)
-            // In a real app, you'd aggregate this from the DB
-            const hot = Math.floor((leadCount || 0) * 0.2);
-            const warm = Math.floor((leadCount || 0) * 0.5);
-            const cold = (leadCount || 0) - hot - warm;
-
-            setStats({
-                totalLeads: leadCount || 0,
-                totalOrders: orderCount || 0,
-                paidOrders: paidOrders.length,
-                totalRevenue: revenue,
-                leadsHot: hot,
-                leadsWarm: warm,
-                leadsCold: cold
-            });
-
+            const data = await getDashboardStatsAction();
+            if (data) {
+                setStats(data);
+            }
         } catch (error) {
             console.error("Error loading stats:", error);
         } finally {
@@ -107,10 +76,8 @@ export default function DashboardPage() {
     const loadConfig = async () => {
         try {
             setLoadingConfig(true);
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return; // Stop if no user
 
-            const data = await aiConfigService.getConfig();
+            const data = await getAIConfigAction();
             if (data) {
                 setFormData({
                     question_1: data.question_1 || '',
@@ -122,11 +89,8 @@ export default function DashboardPage() {
                 });
             }
         } catch (error: any) {
-            // Ignore "User not authenticated" error since we handle redirect elsewhere
-            if (error.message !== 'User not authenticated') {
-                console.error("Failed to load AI config:", error);
-                setMessage({ type: 'error', text: 'Gagal memuat konfigurasi. Silakan refresh halaman.' });
-            }
+            console.error("Failed to load AI config:", error);
+            setMessage({ type: 'error', text: 'Gagal memuat konfigurasi. Silakan refresh halaman.' });
         } finally {
             setLoadingConfig(false);
         }
@@ -143,7 +107,7 @@ export default function DashboardPage() {
         setMessage(null);
 
         try {
-            await aiConfigService.saveConfig(formData);
+            await saveAIConfigAction(formData);
             setMessage({ type: 'success', text: 'Konfigurasi AI berhasil disimpan!' });
             setTimeout(() => {
                 setMessage(null);

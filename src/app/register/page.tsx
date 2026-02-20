@@ -47,7 +47,7 @@ export default function RegisterPage() {
                                         className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                                     >
                                         <span className="font-bold">Tier 1</span>
-                                        <span className="text-xs text-muted-foreground">Chatbot Assistant</span>
+                                        <span className="text-xs text-muted-foreground text-center">Core (Basic)</span>
                                     </Label>
                                 </div>
                                 <div>
@@ -57,7 +57,7 @@ export default function RegisterPage() {
                                         className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                                     >
                                         <span className="font-bold">Tier 2</span>
-                                        <span className="text-xs text-muted-foreground">Sales Agent + Payment</span>
+                                        <span className="text-xs text-muted-foreground text-center">Sales Agent + Payment</span>
                                     </Label>
                                 </div>
                             </RadioGroup>

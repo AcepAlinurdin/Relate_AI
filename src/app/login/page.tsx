@@ -12,13 +12,21 @@ const initialState = {
     error: '',
 };
 
+import { ChevronLeft } from 'lucide-react';
+
 export default function LoginPage() {
     const [state, formAction, isPending] = useActionState(loginUser, initialState);
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-            <Card className="w-full max-w-md">
-                <CardHeader className="text-center">
+            <Card className="w-full max-w-md relative">
+                <Button variant="ghost" className="absolute left-4 top-4" size="icon" asChild>
+                    <Link href="/">
+                        <ChevronLeft className="h-4 w-4" />
+                        <span className="sr-only">Kembali</span>
+                    </Link>
+                </Button>
+                <CardHeader className="text-center pt-10">
                     <CardTitle className="text-2xl">Masuk ke Relate AI</CardTitle>
                     <CardDescription>Kelola bisnis dan chat pelanggan Anda</CardDescription>
                 </CardHeader>
