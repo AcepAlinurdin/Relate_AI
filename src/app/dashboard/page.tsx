@@ -44,8 +44,17 @@ export default function DashboardPage() {
     const [loadingStats, setLoadingStats] = useState(true);
 
     useEffect(() => {
-        loadConfig();
-        loadStats();
+        const init = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                // Redirect if not logged in (though middleware should handle this, double check here)
+                window.location.href = '/login';
+                return;
+            }
+            loadConfig();
+            loadStats();
+        };
+        init();
     }, []);
 
     const loadStats = async () => {
@@ -98,6 +107,9 @@ export default function DashboardPage() {
     const loadConfig = async () => {
         try {
             setLoadingConfig(true);
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return; // Stop if no user
+
             const data = await aiConfigService.getConfig();
             if (data) {
                 setFormData({
@@ -109,9 +121,12 @@ export default function DashboardPage() {
                     additional_details: data.additional_details || ''
                 });
             }
-        } catch (error) {
-            console.error("Failed to load AI config:", error);
-            setMessage({ type: 'error', text: 'Gagal memuat konfigurasi. Silakan refresh halaman.' });
+        } catch (error: any) {
+            // Ignore "User not authenticated" error since we handle redirect elsewhere
+            if (error.message !== 'User not authenticated') {
+                console.error("Failed to load AI config:", error);
+                setMessage({ type: 'error', text: 'Gagal memuat konfigurasi. Silakan refresh halaman.' });
+            }
         } finally {
             setLoadingConfig(false);
         }

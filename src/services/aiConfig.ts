@@ -13,7 +13,12 @@ export interface AIConfig {
 export const aiConfigService = {
     async getConfig() {
         const { data: { user } } = await supabase.auth.getUser();
-        if (!user) throw new Error('User not authenticated');
+        if (!user) {
+            // Try to refresh session or just return null/throw specific error
+            // For now, let's just log and throw, but the UI should handle this.
+            console.error("AI Config Service: No user session found");
+            throw new Error('User not authenticated');
+        }
 
         // First get the tenant_id for the user
         const { data: tenant } = await supabase
@@ -28,9 +33,9 @@ export const aiConfigService = {
             .from('tenant_ai_config')
             .select('*')
             .eq('tenant_id', tenant.id)
-            .single();
+            .maybeSingle();
 
-        if (error && error.code !== 'PGRST116') { // PGRST116 is "no rows returned"
+        if (error) {
             throw error;
         }
 

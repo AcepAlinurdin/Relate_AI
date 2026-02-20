@@ -9,13 +9,10 @@ import { useTier } from '@/contexts/TierContext';
 
 export function Sidebar() {
     const pathname = usePathname();
-    const { tier, setTier } = useTier();
-
-    // Mock tenant data based on tier
-    const tenant = {
-        company_name: "Demo Store",
-        subscription_tier: tier
-    };
+    // In a real app, this should come from a context or a hook that fetches the tenant profile
+    // For now, we'll default to Tier 2 if not loaded, or fetch it.
+    // Ideally: const { tenant } = useTenant();
+    const tier = 2; // Default to Pro for now until we hook up the Context
 
     const isTier1 = tier === 1;
 
@@ -34,35 +31,9 @@ export function Sidebar() {
                     <span className="">Relate AI</span>
                 </Link>
                 <div className="mt-2 text-xs text-muted-foreground">
-                    {tenant.company_name} <br />
                     <span className="font-medium text-foreground">
                         {tier === 1 ? 'Chatbot Plan (Tier 1)' : 'AI Agent Plan (Tier 2)'}
                     </span>
-                </div>
-            </div>
-
-            {/* Tier Switcher for Prototype */}
-            <div className="px-4 py-2">
-                <div className="flex items-center justify-between rounded-md border bg-background p-2 shadow-sm">
-                    <span className="text-xs font-medium">Switch Tier:</span>
-                    <div className="flex gap-1">
-                        <Button
-                            variant={tier === 1 ? "default" : "ghost"}
-                            size="xs"
-                            onClick={() => setTier(1)}
-                            className="h-6 px-2 text-[10px]"
-                        >
-                            T1
-                        </Button>
-                        <Button
-                            variant={tier === 2 ? "default" : "ghost"}
-                            size="xs"
-                            onClick={() => setTier(2)}
-                            className="h-6 px-2 text-[10px]"
-                        >
-                            T2
-                        </Button>
-                    </div>
                 </div>
             </div>
 
@@ -74,10 +45,10 @@ export function Sidebar() {
                             href={link.locked ? '#' : link.href}
                             className={cn(
                                 "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
-                                pathname === link.href ? "bg-muted text-primary" : "text-muted-foreground",
+                                "text-muted-foreground hover:bg-muted",
+                                pathname === link.href && "bg-muted text-primary font-bold",
                                 link.locked && "cursor-not-allowed opacity-60 hover:text-muted-foreground"
                             )}
-                            onClick={(e) => link.locked && e.preventDefault()}
                         >
                             <link.icon className="h-4 w-4" />
                             {link.label}
@@ -86,22 +57,6 @@ export function Sidebar() {
                     ))}
                 </nav>
             </div>
-            {isTier1 && (
-                <div className="p-4">
-                    <div className="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
-                        <h4 className="flex items-center gap-2 text-sm font-semibold">
-                            <Zap className="h-4 w-4 fill-primary text-primary" />
-                            Upgrade to Pro
-                        </h4>
-                        <p className="text-xs text-muted-foreground mt-1">
-                            Unlock Automations & Payments.
-                        </p>
-                        <Button size="sm" className="mt-3 w-full" variant="secondary" onClick={() => setTier(2)}>
-                            Try Tier 2
-                        </Button>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }

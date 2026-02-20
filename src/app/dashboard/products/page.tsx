@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Search, BrainCircuit, Loader2, Trash2 } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Plus, Search, BrainCircuit, Loader2, Trash2, Pencil } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/lib/supabase";
 
@@ -25,6 +25,7 @@ export default function ProductsPage() {
     const [searchTerm, setSearchTerm] = useState("");
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [editingId, setEditingId] = useState<string | null>(null);
 
     // Form state
     const [formData, setFormData] = useState({
@@ -68,7 +69,7 @@ export default function ProductsPage() {
         }
     };
 
-    const handleCreateProduct = async (e: React.FormEvent) => {
+    const handleSaveProduct = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
         try {
@@ -83,31 +84,61 @@ export default function ProductsPage() {
 
             if (!tenant) return;
 
-            const { error } = await supabase.from('products').insert([
-                {
-                    tenant_id: tenant.id,
-                    name: formData.name,
-                    price: parseFloat(formData.price),
-                    // stock is not in schema based on previous read, but user wants it. 
-                    // I'll skip stock insertion if it's not in schema, or assume I need to add it.
-                    // Checking schema.sql earlier: "price numeric, embedding vector". 
-                    // Stock is MISSING in schema. I will add it via migration next turn if it fails.
-                    // For now I'll just save it to description or ignore. 
-                    // WAIT: I should add stock column to products table.
-                    // Let's assume for now I will add it.
-                    description: `${formData.description} (Stock: ${formData.stock})`,
-                }
-            ]);
+            if (editingId) {
+                // Update existing product
+                const { error } = await supabase.from('products')
+                    .update({
+                        name: formData.name,
+                        price: parseFloat(formData.price),
+                        stock: parseInt(formData.stock) || 0,
+                        description: formData.description,
+                    })
+                    .eq('id', editingId)
+                    .eq('tenant_id', tenant.id);
 
-            if (error) throw error;
+                if (error) throw error;
+            } else {
+                // Create new product
+                const { error } = await supabase.from('products').insert([
+                    {
+                        tenant_id: tenant.id,
+                        name: formData.name,
+                        price: parseFloat(formData.price),
+                        stock: parseInt(formData.stock) || 0,
+                        description: formData.description,
+                    }
+                ]);
+
+                if (error) throw error;
+            }
 
             setIsDialogOpen(false);
             setFormData({ name: "", price: "", stock: "", description: "" });
+            setEditingId(null);
             fetchProducts();
         } catch (error) {
-            console.error("Error creating product:", error);
+            console.error("Error saving product:", error);
         } finally {
             setIsSubmitting(false);
+        }
+    };
+
+    const handleEditClick = (product: Product) => {
+        setFormData({
+            name: product.name,
+            price: product.price.toString(),
+            stock: product.stock.toString(),
+            description: product.description
+        });
+        setEditingId(product.id);
+        setIsDialogOpen(true);
+    };
+
+    const handleOpenChange = (open: boolean) => {
+        setIsDialogOpen(open);
+        if (!open) {
+            setFormData({ name: "", price: "", stock: "", description: "" });
+            setEditingId(null);
         }
     };
 
@@ -136,7 +167,7 @@ export default function ProductsPage() {
                         Data ini akan dipelajari oleh AI untuk menjawab pertanyaan pelanggan.
                     </p>
                 </div>
-                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
                     <DialogTrigger asChild>
                         <Button>
                             <Plus className="mr-2 h-4 w-4" /> Tambah Produk
@@ -144,9 +175,12 @@ export default function ProductsPage() {
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>Tambah Produk Baru</DialogTitle>
+                            <DialogTitle>{editingId ? 'Edit Produk' : 'Tambah Produk Baru'}</DialogTitle>
+                            <DialogDescription>
+                                {editingId ? 'Perbarui informasi produk di bawah ini.' : 'Isi form di bawah untuk menambahkan produk baru.'}
+                            </DialogDescription>
                         </DialogHeader>
-                        <form onSubmit={handleCreateProduct} className="space-y-4">
+                        <form onSubmit={handleSaveProduct} className="space-y-4">
                             <div className="space-y-2">
                                 <Label htmlFor="name">Nama Produk</Label>
                                 <Input id="name" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required />
@@ -191,6 +225,7 @@ export default function ProductsPage() {
                         <TableRow>
                             <TableHead>Nama Produk</TableHead>
                             <TableHead>Harga</TableHead>
+                            <TableHead>Stok</TableHead>
                             <TableHead>Deskripsi (untuk AI)</TableHead>
                             <TableHead className="w-[100px]">Status AI</TableHead>
                             <TableHead className="w-[50px]"></TableHead>
@@ -214,6 +249,7 @@ export default function ProductsPage() {
                                 <TableRow key={product.id}>
                                     <TableCell className="font-medium">{product.name}</TableCell>
                                     <TableCell>Rp {product.price.toLocaleString('id-ID')}</TableCell>
+                                    <TableCell>{product.stock}</TableCell>
                                     <TableCell className="max-w-md truncate" title={product.description}>
                                         {product.description}
                                     </TableCell>
@@ -224,6 +260,9 @@ export default function ProductsPage() {
                                         </div>
                                     </TableCell>
                                     <TableCell>
+                                        <Button variant="ghost" size="icon" onClick={() => handleEditClick(product)} className="mr-1">
+                                            <Pencil className="h-4 w-4 text-primary" />
+                                        </Button>
                                         <Button variant="ghost" size="icon" onClick={() => handleDeleteProduct(product.id)}>
                                             <Trash2 className="h-4 w-4 text-destructive" />
                                         </Button>
