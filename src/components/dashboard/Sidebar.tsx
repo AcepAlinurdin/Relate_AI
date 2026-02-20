@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, MessageSquare, Workflow, CreditCard, Settings, Lock, Zap, LogOut } from 'lucide-react';
+import { LayoutDashboard, MessageSquare, Workflow, CreditCard, Settings, Lock, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useTier } from '@/contexts/TierContext';

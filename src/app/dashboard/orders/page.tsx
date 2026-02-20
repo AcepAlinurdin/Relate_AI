@@ -142,7 +142,7 @@ export default function HistoryPaymentPage() {
                             ) : orders.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
-                                        Belum ada order. Klik "Test Order" untuk simulasi.
+                                        Belum ada order. Klik &quot;Test Order&quot; untuk simulasi.
                                     </TableCell>
                                 </TableRow>
                             ) : (

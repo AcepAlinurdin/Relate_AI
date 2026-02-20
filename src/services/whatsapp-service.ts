@@ -23,7 +23,7 @@ export class WhatsappService {
             return false;
         }
 
-        const config = channel.config as any;
+        const config = channel.config as Record<string, string>;
         const wahaUrl = config.url || process.env.WAHA_API_URL || 'http://localhost:3000';
         const sessionName = config.session_name || 'default'; // WAHA session
 

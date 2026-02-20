@@ -1,10 +1,9 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Send, Bot, User, X } from 'lucide-react';
+import { Send, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardFooter, CardHeader } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { useParams, useSearchParams } from 'next/navigation';
@@ -35,8 +34,8 @@ export default function ChatWidgetPage() {
     const scrollRef = useRef<HTMLDivElement>(null);
     const supabase = createClient();
 
-    // Color theme from URL or default
-    const primaryColor = searchParams.get('color') || '2563eb'; // blue-600 default
+    // Color theme from URL or default (Unused for now but kept as _ to show intent)
+    const _primaryColor = searchParams.get('color') || '2563eb'; // blue-600 default
 
     useEffect(() => {
         // Fetch Tenant Info (Public)
@@ -45,7 +44,7 @@ export default function ChatWidgetPage() {
             // Note: RLS must allow public read for 'tenants' table or specific fields
             // For now assuming we can read partial data or using a public view.
             // If RLS blocks, we might need a dedicated API route.
-            const { data, error } = await supabase
+            const { data } = await supabase
                 .from('tenants')
                 .select('name')
                 .eq('id', tenantId)
@@ -56,6 +55,7 @@ export default function ChatWidgetPage() {
             }
         };
         fetchTenant();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tenantId]);
 
     useEffect(() => {

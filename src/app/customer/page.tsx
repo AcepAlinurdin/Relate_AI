@@ -8,10 +8,8 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, LogOut, Package, MessageCircle, X, Send, CreditCard, CheckCircle2 } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 
 interface Product {
@@ -63,6 +61,7 @@ export default function CustomerDashboard() {
         if (isChatOpen && phone && tenantId) {
             initializeChat();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isChatOpen, phone, tenantId]);
 
     useEffect(() => {
@@ -227,7 +226,7 @@ export default function CustomerDashboard() {
 
             // 2. Create Order
             const totalAmount = getTotalPrice();
-            const { data: order, error: orderError } = await supabase
+            const { error: orderError } = await supabase
                 .from('orders')
                 .insert([{
                     tenant_id: tenantId,
@@ -376,8 +375,8 @@ export default function CustomerDashboard() {
                                 {messages.map((msg) => (
                                     <div key={msg.id} className={`flex ${msg.sender_type === 'lead' ? 'justify-end' : 'justify-start'}`}>
                                         <div className={`rounded-lg p-2 max-w-[80%] text-sm shadow-sm ${msg.sender_type === 'lead'
-                                                ? 'bg-primary text-primary-foreground'
-                                                : 'bg-white border'
+                                            ? 'bg-primary text-primary-foreground'
+                                            : 'bg-white border'
                                             }`}>
                                             {msg.content}
                                         </div>

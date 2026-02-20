@@ -4,7 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 
-export async function registerOwner(prevState: any, formData: FormData) {
+export async function registerOwner(_prevState: unknown, formData: FormData) {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
     const companyName = formData.get('company_name') as string;
@@ -18,13 +18,16 @@ export async function registerOwner(prevState: any, formData: FormData) {
     const supabase = await createClient();
 
     // 1. Sign Up User
-    const { data: authData, error: authError } = await supabase.auth.signUp({
+    const signupResult = await supabase.auth.signUp({
         email,
         password,
         options: {
             emailRedirectTo: `${origin}/auth/callback`,
         },
     });
+
+    const authData = signupResult.data;
+    const authError = signupResult.error;
 
     if (authError) {
         return { error: authError.message };
@@ -75,22 +78,20 @@ export async function registerOwner(prevState: any, formData: FormData) {
     redirect('/dashboard');
 }
 
-export async function loginUser(prevState: any, formData: FormData) {
+export async function loginUser(_prevState: unknown, formData: FormData) {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
     const supabase = await createClient();
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
     });
 
-    if (error) {
-        if (error) {
-            console.error("Login Error:", error.message);
-            return { error: error.message }; // Return actual error to help debugging (e.g. "Email not confirmed")
-        }
+    if (signInError) {
+        console.error("Login Error:", signInError.message);
+        return { error: signInError.message };
     }
 
     // Check if user is an owner (has a tenant)

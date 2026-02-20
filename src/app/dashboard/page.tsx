@@ -9,7 +9,7 @@ import { AI_FIXED_QUESTIONS } from "@/lib/constants";
 import { getAIConfigAction, saveAIConfigAction } from "@/app/actions/ai-config";
 import { getDashboardStatsAction } from "@/app/actions/stats";
 import { AIConfig } from "@/services/aiConfig";
-import { Loader2, Users, ShoppingCart, DollarSign, Activity, TrendingUp, BarChart3, Lock } from "lucide-react";
+import { Loader2, Users, ShoppingCart, DollarSign, Activity, BarChart3, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTier } from "@/contexts/TierContext";
 import { supabase } from "@/lib/supabase";
@@ -88,7 +88,7 @@ export default function DashboardPage() {
                     additional_details: data.additional_details || ''
                 });
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Failed to load AI config:", error);
             setMessage({ type: 'error', text: 'Gagal memuat konfigurasi. Silakan refresh halaman.' });
         } finally {

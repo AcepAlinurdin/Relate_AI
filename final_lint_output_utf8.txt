@@ -1,0 +1,111 @@
+﻿
+> relate-ai@0.1.0 lint
+> next lint
+
+node.exe : 
+At C:\Program Files\no
+dejs\npm.ps1:29 char:3
++   & $NODE_EXE 
+$NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (:String) [   
+ ], RemoteExceptio    
+n
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+./src/app/api/billing/
+create-invoice/route.t
+s
+5:28  Error: '_req' 
+is defined but never 
+used.  @typescript-esl
+int/no-unused-vars
+
+./src/app/api/chat/sen
+d/route.ts
+17:47  Error: 
+'_senderType' is 
+assigned a value but 
+never used.  @typescri
+pt-eslint/no-unused-va
+rs
+
+./src/app/api/integrat
+ions/whatsapp/route.ts
+95:27  Error: '_req' 
+is defined but never 
+used.  @typescript-esl
+int/no-unused-vars
+
+./src/app/dashboard/bi
+lling/page.tsx
+9:10  Error: 
+'useRouter' is 
+defined but never 
+used.  @typescript-esl
+int/no-unused-vars
+75:44  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-esl
+int/no-explicit-any
+
+./src/app/embed/[tenan
+tId]/page.tsx
+38:11  Error: 
+'_primaryColor' is 
+assigned a value but 
+never used.  @typescri
+pt-eslint/no-unused-va
+rs
+
+./src/services/ai-conf
+ig-server.ts
+34:42  Error: 
+'_tenantId' is 
+defined but never 
+used.  @typescript-esl
+int/no-unused-vars
+
+./src/services/ai-serv
+ice.ts
+10:67  Error: 
+'_history' is 
+assigned a value but 
+never used.  @typescri
+pt-eslint/no-unused-va
+rs
+36:15  Error: 
+'_systemPrompt' is 
+assigned a value but 
+never used.  @typescri
+pt-eslint/no-unused-va
+rs
+
+./src/services/stats-s
+erver.ts
+19:41  Error: 'leads' 
+is assigned a value 
+but never used.  @type
+script-eslint/no-unuse
+d-vars
+
+./src/utils/supabase/s
+erver.ts
+21:20  Error: 'error' 
+is defined but never 
+used.  @typescript-esl
+int/no-unused-vars
+
+info  - Need to 
+disable some ESLint 
+rules? Learn more 
+here: https://nextjs.o
+rg/docs/app/api-refere
+nce/config/eslint#disa
+bling-rules

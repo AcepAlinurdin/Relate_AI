@@ -7,7 +7,7 @@ export class AIService {
         this.supabase = createAdminClient();
     }
 
-    async generateResponse(tenantId: string, userMessage: string, history: any[] = []): Promise<string> {
+    async generateResponse(tenantId: string, userMessage: string, _history: unknown[] = []): Promise<string> {
         // 1. Fetch Tenant AI Config
         const { data: config } = await this.supabase
             .from('tenant_ai_config')
@@ -33,7 +33,7 @@ export class AIService {
         ).join('\n') || "No products available.";
 
         // 3. Construct System Prompt
-        const systemPrompt = `
+        const _systemPrompt = `
         You are ${persona}, a customer support AI for a store.
         Tone: ${tone}.
         Language: Indonesian (Bahasa Indonesia).

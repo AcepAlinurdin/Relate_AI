@@ -1,0 +1,7 @@
+﻿
+D:\Kerjaan\Relate_Ai\src\app\actions\auth.ts
+   7:49  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  78:45  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+Γ£û 2 problems (2 errors, 0 warnings)
+

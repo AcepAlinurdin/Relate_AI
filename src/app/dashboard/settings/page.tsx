@@ -7,12 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
 import { MessageSquare, Send, Lock, CreditCard, Code, Copy, Check, Save, Loader2 } from "lucide-react";
 import { useTier } from "@/contexts/TierContext";
 import { supabase } from "@/lib/supabase";
 import { updateTenantSettings } from "@/app/actions/settings";
-import { toast } from "sonner";
 
 export default function SettingsPage() {
     const { tier, status } = useTier();

@@ -2,10 +2,10 @@ import { createAdminClient } from "@/utils/supabase/server";
 import { aiService } from "@/services/ai-service";
 
 export interface ProcessResult {
-    userMessage: any;
-    aiMessage: any;
-    lead: any;
-    conversation: any;
+    userMessage: { id: string; content: string; created_at: string };
+    aiMessage: { id: string; content: string; created_at: string };
+    lead: { id: string };
+    conversation: { id: string };
 }
 
 export class ChatProcessor {

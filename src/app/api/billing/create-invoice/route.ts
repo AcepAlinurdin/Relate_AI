@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/utils/supabase/server";
 import { billingService } from "@/services/billing-service";
 
-export async function POST(req: NextRequest) {
+export async function POST(_req: NextRequest) {
     try {
         const supabase = createAdminClient();
 

@@ -16,7 +16,7 @@ export const getCachedStats = unstable_cache(
         const supabase = createAdminClient();
 
         // Fetch Leads Count
-        const { count: leadCount, data: leads } = await supabase
+        const { count: leadCount } = await supabase
             .from('leads')
             .select('status', { count: 'exact' }) // Select minimal fields
             .eq('tenant_id', tenantId);
@@ -28,8 +28,8 @@ export const getCachedStats = unstable_cache(
             .eq('tenant_id', tenantId);
 
         // Calculate metrics
-        const paidOrders = orders?.filter((o: any) => o.status === 'paid') || [];
-        const revenue = paidOrders.reduce((sum: number, order: any) => sum + (order.total_amount || 0), 0);
+        const paidOrders = orders?.filter((o: { status: string; total_amount: number }) => o.status === 'paid') || [];
+        const revenue = paidOrders.reduce((sum: number, order: { status: string; total_amount: number }) => sum + (order.total_amount || 0), 0);
 
         // Mock Lead Scoring distribution (since we don't have real scores yet for all)
         const hot = Math.floor((leadCount || 0) * 0.2);

@@ -1,0 +1,84 @@
+
+./src/app/actions/auth.ts
+7:49  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+81:45  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/actions/settings.ts
+6:55  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+36:20  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/billing/create-invoice/route.ts
+5:28  Error: 'req' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/chat/send/route.ts
+17:47  Error: 'senderType' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/integrations/whatsapp/route.ts
+95:27  Error: 'req' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/customer/page.tsx
+11:10  Error: 'ScrollArea' is defined but never used.  @typescript-eslint/no-unused-vars
+12:10  Error: 'Separator' is defined but never used.  @typescript-eslint/no-unused-vars
+14:93  Error: 'DialogTrigger' is defined but never used.  @typescript-eslint/no-unused-vars
+66:8  Warning: React Hook useEffect has a missing dependency: 'initializeChat'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+230:27  Error: 'order' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/dashboard/billing/page.tsx
+12:94  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+63:11  Error: 'router' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+65:44  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/dashboard/orders/page.tsx
+145:63  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+145:74  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./src/app/dashboard/page.tsx
+12:62  Error: 'TrendingUp' is defined but never used.  @typescript-eslint/no-unused-vars
+91:25  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/dashboard/settings/page.tsx
+10:10  Error: 'Badge' is defined but never used.  @typescript-eslint/no-unused-vars
+15:10  Error: 'toast' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/embed/[tenantId]/page.tsx
+4:21  Error: 'User' is defined but never used.  @typescript-eslint/no-unused-vars
+4:27  Error: 'X' is defined but never used.  @typescript-eslint/no-unused-vars
+7:10  Error: 'Card' is defined but never used.  @typescript-eslint/no-unused-vars
+7:16  Error: 'CardFooter' is defined but never used.  @typescript-eslint/no-unused-vars
+7:28  Error: 'CardHeader' is defined but never used.  @typescript-eslint/no-unused-vars
+39:11  Error: 'primaryColor' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+48:27  Error: 'error' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+59:8  Warning: React Hook useEffect has a missing dependency: 'supabase'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/dashboard/Sidebar.tsx
+5:80  Error: 'Zap' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/services/ai-config-server.ts
+34:42  Error: 'tenantId' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/services/ai-service.ts
+10:67  Error: 'history' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+10:76  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+36:15  Error: 'systemPrompt' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/services/chat-processor.ts
+5:18  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+6:16  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+7:11  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+8:19  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/services/stats-server.ts
+19:41  Error: 'leads' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+31:47  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+32:64  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/services/whatsapp-service.ts
+26:42  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/utils/supabase/middleware.ts
+18:58  Error: 'options' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/utils/supabase/server.ts
+21:20  Error: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

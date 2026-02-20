@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
         await limiter.check(20, ip); // 20 requests per minute per IP
 
         const body = await req.json();
-        const { tenantId, message, sessionId, senderType = 'user' } = body;
+        const { tenantId, message, sessionId, _senderType = 'user' } = body;
 
         console.log(`[Chat API] Received:`, { tenantId, message, sessionId });
 

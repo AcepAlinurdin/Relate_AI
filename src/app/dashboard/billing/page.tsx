@@ -6,10 +6,27 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, Loader2, CreditCard, AlertCircle, X } from "lucide-react";
 import { useTier } from "@/contexts/TierContext";
-import { useRouter } from "next/navigation";
+
+interface PlanCardProps {
+    title: string;
+    price: string;
+    features: string[];
+    current: boolean;
+    onUpgrade: (tier: number) => void;
+    loading: boolean;
+    customButtonText?: string;
+    targetTier: number;
+}
+
+interface Invoice {
+    id: string;
+    target_tier: number;
+    amount: number;
+    status: string;
+}
 
 // Sub-component for pricing card
-function PlanCard({ title, price, features, current, onUpgrade, loading, customButtonText }: any) {
+function PlanCard({ title, price, features, current, onUpgrade, loading, customButtonText, targetTier }: PlanCardProps) {
     return (
         <Card className={`flex flex-col ${current ? 'border-primary shadow-md' : ''}`}>
             <CardHeader>
@@ -46,7 +63,7 @@ function PlanCard({ title, price, features, current, onUpgrade, loading, customB
                     <Button
                         className="w-full"
                         variant={price === 'Free' ? "outline" : "default"}
-                        onClick={onUpgrade}
+                        onClick={() => onUpgrade(targetTier)}
                         disabled={loading}
                     >
                         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -60,9 +77,8 @@ function PlanCard({ title, price, features, current, onUpgrade, loading, customB
 
 export default function BillingPage() {
     const { tier, status, refreshTier } = useTier(); // Get status from context
-    const router = useRouter();
     const [loading, setLoading] = useState(false);
-    const [invoice, setInvoice] = useState<any>(null); // To show Payment Instructions
+    const [invoice, setInvoice] = useState<Invoice | null>(null); // To show Payment Instructions
 
     // Auto-fetch invoice if pending payment and no invoice shown yet
     useEffect(() => {

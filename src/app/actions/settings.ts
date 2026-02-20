@@ -3,7 +3,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 
-export async function updateTenantSettings(prevState: any, formData: FormData) {
+export async function updateTenantSettings(_prevState: unknown, formData: FormData) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -33,7 +33,7 @@ export async function updateTenantSettings(prevState: any, formData: FormData) {
     const bank_account_number = formData.get('bank_account_number') as string;
     const bank_account_holder = formData.get('bank_account_holder') as string;
 
-    const updates: any = {
+    const updates: Record<string, string | null> = {
         waha_url: waha_url || null,
         telegram_bot_token: telegram_bot_token || null,
     };

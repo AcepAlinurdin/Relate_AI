@@ -31,7 +31,7 @@ export const getCachedAIConfig = unstable_cache(
     }
 );
 
-export async function revalidateAIConfig(tenantId: string) {
+export async function revalidateAIConfig(_tenantId: string) {
     // In a real app we'd use more specific tags like `ai-config-${tenantId}`
     // But for now, we'll revalidate the cache key or general tag.
     // unstable_cache keys are hashed. 
